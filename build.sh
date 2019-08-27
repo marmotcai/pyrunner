@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APP_NAME=qas
-APP_GITURL="https://github.com/tp-yan/WebStockPredict.git"
+APP_GITURL="https://github.com/marmotcai/qas.git"
 
 cmd=${1}
 param=${2}
@@ -14,7 +14,7 @@ case $cmd in
     fi
 
     if [ ! -z "${param}" ];then
-      docker build --build-arg APP_GITURL=${param1} --target ${param} -t marmotcai/${param} -f ./Dockerfile .
+      docker build --build-arg APP_GITURL=${param1} --target ${param} -t marmotcai/${APP_NAME} -f ./Dockerfile .
     else
       docker build --build-arg APP_GITURL=${param1} -t marmotcai/${APP_NAME} -f ./Dockerfile .
     fi 
@@ -23,9 +23,9 @@ case $cmd in
   run)
     docker rm -f my-${APP_NAME}
     if [[ $param =~ 'ssh' ]]; then
-      docker run --name my-${APP_NAME} -d -p 3222:22 -v $PWD:/root/app marmotcai/${APP_NAME}
+      docker run --name my-${APP_NAME} -d -p 3222:22 -v $PWD:/root/${APP_NAME} marmotcai/${APP_NAME}
     else
-      docker run --name my-${APP_NAME} -d -v $PWD:/root/app marmotcai/${APP_NAME}
+      docker run --name my-${APP_NAME} -d -v $PWD:/root/${APP_NAME} marmotcai/${APP_NAME}
     fi
   ;;
 
@@ -38,7 +38,7 @@ case $cmd in
   ;;
 
   bash)
-    docker run --rm -ti -v $PWD:/root/app marmotcai/${APP_NAME} /bin/bash
+    docker run --rm -ti -v $PWD:/root/local marmotcai/${APP_NAME} /bin/bash
   ;;
 
   python)

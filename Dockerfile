@@ -1,23 +1,7 @@
-FROM python:3 AS runner
+FROM python:3 AS base
 MAINTAINER marmotcai "marmotcai@163.com"
 
-ARG APP_GITURL="NULL"
-
-ENV WORK_DIR=/root
-WORKDIR ${WORK_DIR}
-
-ENV APP_DIR=${WORK_DIR}/app
-RUN mkdir -p ${APP_DIR}
-
-RUN if [ "${APP_GITURL}" != "NULL" ] ; then echo ${APP_GITURL} ;  git clone ${APP_GITURL} ${APP_DIR} ; fi
-
-COPY requirements.txt ${APP_DIR}/requirements.txt
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r ${APP_DIR}/requirements.txt
-
-########################################################
-
-FROM runner AS ssh
+#######################################################
 
 RUN sed -i '$a\alias ll=\"ls -alF\"' ~/.bashrc
 RUN sed -i '$a\alias la=\"ls -A\"' ~/.bashrc
@@ -36,14 +20,37 @@ RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/
     echo "root:112233" | chpasswd && \
     mkdir /var/run/sshd
 
+#######################################################
+
+ENV WORK_DIR=/root
+WORKDIR ${WORK_DIR}
+
+COPY requirements.txt requirements.txt
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r requirements.txt
+
+#######################################################
+
 EXPOSE 22
 EXPOSE 80
 
 CMD ["/usr/sbin/sshd", "-D"]
 
-# ENV APP_PATH ${WORK_DIR}/app
-# ENV PATH $PATH:$APP_PATH
+#######################################################
 
-# COPY . .
-# CMD [ "python3", "./training.py", "-h" ]
+FROM base AS runner
+
+ARG APP_GITURL="NULL"
+
+ENV APP_DIR=${WORK_DIR}/app
+RUN mkdir -p ${APP_DIR}
+
+RUN if [ "${APP_GITURL}" != "NULL" ] ; then echo ${APP_GITURL} ;  git clone ${APP_GITURL} ${APP_DIR} ; fi
+
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir -r ${APP_DIR}/requirements.txt
+
+########################################################
+
+
 
