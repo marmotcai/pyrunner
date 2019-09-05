@@ -14,9 +14,9 @@ case $cmd in
     fi
 
     if [ ! -z "${param}" ];then
-      docker build --build-arg APP_GITURL=${param1} --target ${param} -t marmotcai/${APP_NAME} -f ./Dockerfile .
+      docker build --build-arg ${param1} --target ${param} -t marmotcai/${APP_NAME} -f ./Dockerfile .
     else
-      docker build --build-arg APP_GITURL=${param1} -t marmotcai/${APP_NAME} -f ./Dockerfile .
+      docker build --build-arg ${param1} -t marmotcai/${APP_NAME} -f ./Dockerfile .
     fi 
   ;;
 
@@ -46,7 +46,8 @@ case $cmd in
   ;; 
 
   *)
-    echo "use: sh build.sh image runner https://github.com/marmotcai/qas.git"
+    echo "use: sh build.sh image base REQUIREMENTS_URL=https://raw.githubusercontent.com/marmotcai/pyrunner/master/requirements.txt"
+    echo "use: sh build.sh image runner APP_GITURL=https://github.com/marmotcai/qas.git"
     echo "     sh build.sh image"
     echo "use: sh build.sh run --ssh"
     echo "use: sh build.sh exec imagename"

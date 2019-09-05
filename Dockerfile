@@ -1,4 +1,7 @@
 FROM python:3 AS base
+
+ARG REQUIREMENTS_URL="NULL"
+
 MAINTAINER marmotcai "marmotcai@163.com"
 
 #######################################################
@@ -25,9 +28,11 @@ RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/
 ENV WORK_DIR=/root
 WORKDIR ${WORK_DIR}
 
-COPY requirements.txt requirements.txt
 RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+
+RUN echo ${REQUIREMENTS_URL}
+RUN if [ "${REQUIREMENTS_URL}" != "NULL" ] ; then wget -O requirements.txt ${REQUIREMENTS_URL} ; \
+						  pip install --no-cache-dir -r requirements.txt ; fi
 
 #######################################################
 
