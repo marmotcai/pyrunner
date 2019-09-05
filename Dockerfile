@@ -43,17 +43,17 @@ CMD ["/usr/sbin/sshd", "-D"]
 
 #######################################################
 
-FROM base AS runner
+# FROM base AS runner
 
-ARG APP_GITURL="NULL"
+# ARG APP_GITURL="NULL"
 
-ENV APP_DIR=${WORK_DIR}/app
-RUN mkdir -p ${APP_DIR}
+# ENV APP_DIR=${WORK_DIR}/app
+# RUN mkdir -p ${APP_DIR}
 
-RUN if [ "${APP_GITURL}" != "NULL" ] ; then echo ${APP_GITURL} ;  git clone ${APP_GITURL} ${APP_DIR} ; fi
+# RUN if [ "${APP_GITURL}" != "NULL" ] ; then echo ${APP_GITURL} ;  git clone ${APP_GITURL} ${APP_DIR} ; fi
 
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r ${APP_DIR}/requirements.txt
+# RUN pip install --upgrade pip
+# RUN pip install --no-cache-dir -r ${APP_DIR}/requirements.txt
 
 ########################################################
 
