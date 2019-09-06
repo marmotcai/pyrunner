@@ -30,7 +30,8 @@ WORKDIR ${WORK_DIR}
 
 RUN pip install --upgrade pip
 
-RUN echo ${REQUIREMENTS_URL}
+RUN echo ${REQUIREMENTS_URL}i
+RUN echo "ver: qas 1.0"
 RUN if [ "${REQUIREMENTS_URL}" != "NULL" ] ; then wget -O requirements.txt ${REQUIREMENTS_URL} ; \
 						  pip install --no-cache-dir -r requirements.txt ; fi
 
