@@ -28,12 +28,12 @@ RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/
 ENV WORK_DIR=/root
 WORKDIR ${WORK_DIR}
 
-RUN pip install --upgrade pip
+ENV PIP_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"
+RUN pip install --upgrade -i ${PIP_INDEX_URL} pip
 
 RUN echo ${REQUIREMENTS_URL}i
-RUN echo "ver: qas 1.0"
 RUN if [ "${REQUIREMENTS_URL}" != "NULL" ] ; then wget -O requirements.txt ${REQUIREMENTS_URL} ; \
-						  pip install --no-cache-dir -r requirements.txt ; fi
+						  pip install -i ${PIP_INDEX_URL} --no-cache-dir -r requirements.txt ; fi
 
 #######################################################
 

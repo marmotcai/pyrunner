@@ -1,7 +1,7 @@
 #!/bin/bash
 
 APP_NAME=qas
-APP_GITURL="https://github.com/marmotcai/qas.git"
+APP_GITURL="https://github.com/marmotcai/pyrunner.git"
 
 cmd=${1}
 param=${2}
@@ -47,7 +47,7 @@ case $cmd in
 
   *)
     echo "use: sh build.sh image base REQUIREMENTS_URL=https://raw.githubusercontent.com/marmotcai/pyrunner/master/requirements.txt"
-    echo "use: sh build.sh image runner APP_GITURL=https://github.com/marmotcai/qas.git"
+    echo "use: sh build.sh image runner APP_GITURL=://github.com/marmotcai/pyrunner.git"
     echo "     sh build.sh image"
     echo "use: sh build.sh run --ssh"
     echo "use: sh build.sh exec imagename"
@@ -58,5 +58,3 @@ esac
 
 exit 0;
 
-# docker rm -f my-shorttrading
-# docker run --name my-shorttrading -ti -d -p 3222:22 -v $PWD:/root/shorttrading marmotcai/shorttrading
