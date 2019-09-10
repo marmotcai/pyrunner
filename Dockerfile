@@ -28,12 +28,14 @@ RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/
 ENV WORK_DIR=/root
 WORKDIR ${WORK_DIR}
 
-ENV PIP_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"
-RUN pip install --upgrade -i ${PIP_INDEX_URL} pip
+RUN pip install --upgrade pip
+# ENV PIP_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"
+# RUN pip install --upgrade -i ${PIP_INDEX_URL} pip
 
 RUN echo ${REQUIREMENTS_URL}i
 RUN if [ "${REQUIREMENTS_URL}" != "NULL" ] ; then wget -O requirements.txt ${REQUIREMENTS_URL} ; \
-						  pip install -i ${PIP_INDEX_URL} --no-cache-dir -r requirements.txt ; fi
+						  pip install --no-cache-dir -r requirements.txt ; \
+						  fi
 
 #######################################################
 
@@ -43,20 +45,4 @@ EXPOSE 80
 CMD ["/usr/sbin/sshd", "-D"]
 
 #######################################################
-
-# FROM base AS runner
-
-# ARG APP_GITURL="NULL"
-
-# ENV APP_DIR=${WORK_DIR}/app
-# RUN mkdir -p ${APP_DIR}
-
-# RUN if [ "${APP_GITURL}" != "NULL" ] ; then echo ${APP_GITURL} ;  git clone ${APP_GITURL} ${APP_DIR} ; fi
-
-# RUN pip install --upgrade pip
-# RUN pip install --no-cache-dir -r ${APP_DIR}/requirements.txt
-
-########################################################
-
-
 
