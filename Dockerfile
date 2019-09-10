@@ -29,11 +29,13 @@ ENV WORK_DIR=/root
 WORKDIR ${WORK_DIR}
 
 RUN pip install --upgrade pip
+
 # ENV PIP_INDEX_URL="https://mirrors.aliyun.com/pypi/simple"
 # RUN pip install --upgrade -i ${PIP_INDEX_URL} pip
 
 RUN echo ${REQUIREMENTS_URL}i
 RUN if [ "${REQUIREMENTS_URL}" != "NULL" ] ; then wget -O requirements.txt ${REQUIREMENTS_URL} ; \
+						  # pip install -i ${PIP_INDEX_URL} --no-cache-dir -r requirements.txt ; \
 						  pip install --no-cache-dir -r requirements.txt ; \
 						  fi
 

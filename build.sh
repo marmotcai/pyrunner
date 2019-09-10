@@ -1,6 +1,6 @@
 #!/bin/bash
 
-APP_NAME=qas
+APP_NAME=pyrunner
 APP_GITURL="https://github.com/marmotcai/pyrunner.git"
 
 cmd=${1}
@@ -8,6 +8,10 @@ param=${2}
 param1=${3}
 
 case $cmd in
+  base)
+    docker build -t marmotcai/pyrunner -f ./Dockerfile .
+  ;;
+
   image)
     if [ -z "${param1}" ];then
       param1=${APP_GITURL}
