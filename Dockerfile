@@ -55,9 +55,9 @@ LABEL maintainer="marmotcai@163.com"
 ARG GIT_URL=""
 ARG RUN_SUBDIR=""
 ARG EXPOSE_PORT=0
-ARG CMD1="start.sh"
-ARG CMD2="web"
-ARG CMD3=""
+ARG CMD1="bash"
+ARG CMD2="start.sh"
+ARG CMD3="web"
 
 RUN echo 'GIT_URL: ' ${GIT_URL}
 
@@ -72,9 +72,11 @@ RUN if [ "$GIT_URL" = "" ] ; then \
 ; fi
 
 ENV WORK_DIR=${APP_DIR}/${RUN_SUBDIR}
-RUN echo "work dir: " ${WORK_DIR}
 WORKDIR ${WORK_DIR}
+RUN echo "Work dir: " ${WORK_DIR}
 RUN ls -l
+
+RUN  echo "CMD: " ${CMD1} " " ${CMD2} " " ${CMD3} 
 
 EXPOSE ${EXPOSE_PORT}
 RUN echo "EXPOSE_PORT: " ${EXPOSE_PORT}

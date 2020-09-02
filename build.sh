@@ -15,14 +15,12 @@ case $cmd in
   pyrunner)
     GIT_URL=${param}
     if [ -z "${GIT_URL}" ];then
-      GIT_URL=${APP_GITURL}
+      # GIT_URL=${APP_GITURL}
+      echo "GIT_URL is null"
     fi
     echo ${GIT_URL}
     docker build \
           --build-arg ROOT_DIR=/workspaces \
-          --build-arg GIT_URL=${GIT_URL} \
-          --build-arg GIT_URL=${GIT_URL} \
-          --build-arg GIT_URL=${GIT_URL} \
           --build-arg GIT_URL=${GIT_URL} \
           --target pyrunner \
           -t atoml/pyrunner -f ./Dockerfile .
@@ -45,9 +43,9 @@ case $cmd in
   ;; 
 
   *)
-    echo "use: sh build.sh image base"
-    echo "use: sh build.sh image runner APP_GITURL=://github.com/marmotcai/pyrunner.git"
-    echo "     sh build.sh image"
+    echo "use: sh build.sh base           # 构建基本镜像"
+    echo "use: sh build.sh pyrunner xx    # 构建带Git下载的镜像"
+    
     echo "use: sh build.sh run --ssh"
     echo "use: sh build.sh exec imagename"
     echo "     sh build.sh bash"
