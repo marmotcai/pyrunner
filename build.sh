@@ -9,28 +9,23 @@ param1=${3}
 
 case $cmd in
   base)
-    docker build -t marmotcai/pyrunner -f ./Dockerfile .
+    docker build --build-arg ROOT_DIR=/workspaces --target base -t atoml/base -f ./Dockerfile .
   ;;
 
-  image)
-    if [ -z "${param1}" ];then
-      param1=${APP_GITURL}
+  pyrunner)
+    GIT_URL=${param}
+    if [ -z "${GIT_URL}" ];then
+      GIT_URL=${APP_GITURL}
     fi
-
-    if [ ! -z "${param}" ];then
-      docker build --build-arg ${param1} --target ${param} -t marmotcai/${APP_NAME} -f ./Dockerfile .
-    else
-      docker build --build-arg ${param1} -t marmotcai/${APP_NAME} -f ./Dockerfile .
-    fi 
-  ;;
-
-  run)
-    docker rm -f my-${APP_NAME}
-    if [[ $param =~ 'ssh' ]]; then
-      docker run --name my-${APP_NAME} -d -p 3222:22 -v $PWD:/root/${APP_NAME} marmotcai/${APP_NAME}
-    else
-      docker run --name my-${APP_NAME} -d -v $PWD:/root/${APP_NAME} marmotcai/${APP_NAME}
-    fi
+    echo ${GIT_URL}
+    docker build \
+          --build-arg ROOT_DIR=/workspaces \
+          --build-arg GIT_URL=${GIT_URL} \
+          --build-arg GIT_URL=${GIT_URL} \
+          --build-arg GIT_URL=${GIT_URL} \
+          --build-arg GIT_URL=${GIT_URL} \
+          --target pyrunner \
+          -t atoml/pyrunner -f ./Dockerfile .
   ;;
 
   exec)
@@ -50,7 +45,7 @@ case $cmd in
   ;; 
 
   *)
-    echo "use: sh build.sh image base REQUIREMENTS_URL=https://raw.githubusercontent.com/marmotcai/pyrunner/master/requirements.txt"
+    echo "use: sh build.sh image base"
     echo "use: sh build.sh image runner APP_GITURL=://github.com/marmotcai/pyrunner.git"
     echo "     sh build.sh image"
     echo "use: sh build.sh run --ssh"
